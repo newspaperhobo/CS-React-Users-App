@@ -2,22 +2,22 @@ import React, { useEffect, useState } from 'react';
 import UserItem from './User/UserItem';
 import InputField from './shared/InputField';
 
-const initialUsers = [
-  {
-    id: 1,
-    name: "name1",
-    location: "location1",
-    followers: 46,
-    following: 54
-  },
-  {
-    id: 2,
-    name: "name2",
-    location: "location2",
-    followers: 100,
-    following: 1
-  }
-];
+// const initialUsers = [
+//   {
+//     id: 1,
+//     name: "name1",
+//     location: "location1",
+//     followers: 46,
+//     following: 54
+//   },
+//   {
+//     id: 2,
+//     name: "name2",
+//     location: "location2",
+//     followers: 100,
+//     following: 1
+//   }
+// ];
 
 function App() {
   const [userName, setUserName] = useState("");
@@ -30,18 +30,24 @@ function App() {
 
   useEffect(() => {
     setIsLoading(true);
-    getUsersAsync()
-    .then(res => {
-      setUsers(res.data);
-      setIsLoading(false);
-    })
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then(res => res.json())
+      .then((json) => {
+        setUsers(json)
+        setIsLoading(false)
+      })
+    // getUsersAsync()
+    // .then(res => {
+    //   setUsers(res.data);
+    //   setIsLoading(false);
+    // })
   }, [userName]);
 
-  const getUsersAsync = () => {
-    return new Promise(resolve => {
-      setTimeout(() => resolve({ data : initialUsers }), 3000)
-    })
-  }
+  // const getUsersAsync = () => {
+  //   return new Promise(resolve => {
+  //     setTimeout(() => resolve({ data : initialUsers }), 3000)
+  //   })
+  // }
 
   const handleUserNameChange = (event) => {
     setUserName(event.target.value);
