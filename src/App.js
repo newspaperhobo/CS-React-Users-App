@@ -2,25 +2,8 @@ import React, { useEffect, useState } from 'react';
 import UserItem from './User/UserItem';
 import InputField from './shared/InputField';
 
-// const initialUsers = [
-//   {
-//     id: 1,
-//     name: "name1",
-//     location: "location1",
-//     followers: 46,
-//     following: 54
-//   },
-//   {
-//     id: 2,
-//     name: "name2",
-//     location: "location2",
-//     followers: 100,
-//     following: 1
-//   }
-// ];
-
 function App() {
-  const [userName, setUserName] = useState("");
+  const [userName, setUserName] = useState("newspaperhobo");
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,12 +13,13 @@ function App() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("https://jsonplaceholder.typicode.com/users")
+    fetch(`https://api.github.com/users/${userName}`)
       .then(res => res.json())
-      .then((json) => {
-        setUsers(json)
+      .then(data => {
+        setUsers([data])
         setIsLoading(false)
       })
+      .catch(err => console.log(err))
     // getUsersAsync()
     // .then(res => {
     //   setUsers(res.data);
@@ -74,7 +58,7 @@ function App() {
       <hr />
       {/* JSX conditional needs to be wrapped in curly braces */}
       {isLoading ? <p>Loading...</p> : 
-      <UserItem users={users} handleUserDisplay={handleUserDisplay} />}
+      <UserItem users={ users } handleUserDisplay={handleUserDisplay} />}
     </div>
   );
 }
