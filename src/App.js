@@ -12,28 +12,6 @@ function App() {
     localStorage.setItem("UserName", userName);
   }, [userName]);
 
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   fetch(`https://api.github.com/users/${userName}`)
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       setUsers([data])
-  //       setIsLoading(false)
-  //     })
-  //     .catch(err => console.log(err))
-  //   // getUsersAsync()
-  //   // .then(res => {
-  //   //   setUsers(res.data);
-  //   //   setIsLoading(false);
-  //   // })
-  // }, [userName]);
-
-  // const getUsersAsync = () => {
-  //   return new Promise(resolve => {
-  //     setTimeout(() => resolve({ data : initialUsers }), 3000)
-  //   })
-  // }
-
   const handleUserNameChange = (event) => {
     setUserName(event.target.value);
   };
@@ -42,11 +20,10 @@ function App() {
     console.log(`You selected ${user.name}`);
   };
 
- const handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
       setIsLoading(true);
        axios.get(`https://api.github.com/users/${userName}`)
-          // .then((res) => res.json())
           .then(res =>{
             console.log(res)
             console.log(res.data)
@@ -72,7 +49,6 @@ function App() {
         <button type="submit">Search</button>
       </form>
       <hr />
-      {/* JSX conditional needs to be wrapped in curly braces */}
       {isLoading ? (
         <p>Loading...</p>
       ) : (

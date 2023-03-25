@@ -9,7 +9,6 @@ function InputField({ id, type, value, onChangeFunction, isFocused, children }) 
     }
   }, [isFocused]);
 
-
   return (
     <React.Fragment>
       <label htmlFor={id}>{children}</label>
