@@ -1,3 +1,4 @@
+import axios from "axios"
 import React, { useEffect, useState } from 'react';
 import UserItem from './User/UserItem';
 import InputField from './shared/InputField';
@@ -11,21 +12,21 @@ function App() {
     localStorage.setItem("UserName", userName);
   }, [userName]);
 
-  useEffect(() => {
-    setIsLoading(true);
-    fetch(`https://api.github.com/users/${userName}`)
-      .then(res => res.json())
-      .then(data => {
-        setUsers([data])
-        setIsLoading(false)
-      })
-      .catch(err => console.log(err))
-    // getUsersAsync()
-    // .then(res => {
-    //   setUsers(res.data);
-    //   setIsLoading(false);
-    // })
-  }, [userName]);
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   fetch(`https://api.github.com/users/${userName}`)
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       setUsers([data])
+  //       setIsLoading(false)
+  //     })
+  //     .catch(err => console.log(err))
+  //   // getUsersAsync()
+  //   // .then(res => {
+  //   //   setUsers(res.data);
+  //   //   setIsLoading(false);
+  //   // })
+  // }, [userName]);
 
   // const getUsersAsync = () => {
   //   return new Promise(resolve => {
@@ -41,24 +42,42 @@ function App() {
     console.log(`You selected ${user.name}`);
   };
 
+ const handleSubmit = (e) => {
+    e.preventDefault();
+      setIsLoading(true);
+       axios.get(`https://api.github.com/users/${userName}`)
+          // .then((res) => res.json())
+          .then(res =>{
+            console.log(res)
+            console.log(res.data)
+            setUsers([res.data]);
+            setIsLoading(false);
+          })
+          .catch((err) => console.log(err));
+  };
+
   return (
     <div className="App">
       <h1>Users</h1>
-
-      <InputField
-        id="user-name"
-        type="text"
-        value={userName}
-        onChangeFunction={handleUserNameChange}
-        isFocused
-      >
-        User:
-      </InputField>
-
+      <form onSubmit={handleSubmit}>
+        <InputField
+          id="user-name"
+          type="text"
+          value={userName}
+          onChangeFunction={handleUserNameChange}
+          isFocused
+        >
+          User:
+        </InputField>
+        <button type="submit">Search</button>
+      </form>
       <hr />
       {/* JSX conditional needs to be wrapped in curly braces */}
-      {isLoading ? <p>Loading...</p> : 
-      <UserItem users={ users } handleUserDisplay={handleUserDisplay} />}
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <UserItem users={users} handleUserDisplay={handleUserDisplay} />
+      )}
     </div>
   );
 }

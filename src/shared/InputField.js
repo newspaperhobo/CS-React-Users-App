@@ -21,8 +21,6 @@ function InputField({ id, type, value, onChangeFunction, isFocused, children }) 
         value={value}
         onChange={onChangeFunction}
       />
-
-      <p>Searching for a user named: {value}</p>
     </React.Fragment>
   );
 }
